@@ -1,0 +1,61 @@
+# start this profile with "$env:GGML_VK_VISIBLE_DEVICES="0"
+name: "Test"
+description: "QAT Komprimierung von Unsloth. Kaum Quantisierungsfehler. Ist aber eine 17 GB Datei. Damit reduzierter Kontext."
+
+# Für Beschreibung Parameter siehe hier: https://github.com/ggml-org/llama.cpp/blob/master/tools/cli/README.md
+defaults:
+  model: "gemma"   # → defaults/models/gemma.yaml
+  engine: "sycl"  # → instances/<name>/engines/sycl.yaml
+
+common:
+  # m: "C:\\AI_Models\\LLM\\GGUF_Raw\\gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf" # Nur 14.2 GB bei fast keinen Quantisierungsfehlern!
+  m: "C:\\AI_Models\\LLM\\GGUF_Raw\\gemma-4-12B-it-qat-UD-Q4_K_XL.gguf" # Nur 14.2 GB bei fast keinen Quantisierungsfehlern!
+  # c: 262000
+  # c: 65536
+  c: 16384
+  threads: 6 # für ruhigen Betrieb im Hintergrund. threads: 14 wäre maximalbetrieb. Siehe auch Diskussion mit Gemini 3.1 pro am 10.6.2026
+  # Die Speicherarchitektur MUSS global gelten. Mit q4 ist ein grösserer Kontext möglich
+  cache-type-k: "q4_0" # leider nicht q8, da grosses Modell
+  cache-type-v: "q4_0" # leider nicht q8, da grosses Modell
+  # Flash Attention MUSS global sein, wenn der Cache quantisiert wird
+  flash-attn: true
+  # Vulkan spezifisch:
+  split-mode: none
+  main-gpu: 0
+  n-gpu-layers: 99 #ngl
+
+# Diese Parameter werden NUR im 'serve' Modus angehängt
+serve:
+  # mmproj: "C:\\AI_Models\\LLM\\GGUF_Raw\\mmproj-F16-qat.gguf"
+  # image-min-tokens: 300
+  # image-max-tokens: 512
+  ubatch-size: 2048
+  batch-size: 2048
+  parallel: 1
+  cont-batching: true
+  jinja: true # wird zwingend für Gemma 4 benötigt
+  # falls nicht im ensemble definiert:
+  port: 8081
+  host: "0.0.0.0"
+
+  cache-ram: 0
+  # kv-unified: true
+  ctx-checkpoints: 0
+
+# Diese Parameter werden NUR im 'bench' Modus angehängt
+bench:
+  r: 1
+  pg:
+      - [512, 128]           # Referenz: Fast leerer Cache
+      - [1024, 128]
+      - [2048, 128]
+      - [4096, 128]
+      - [8192, 128]
+      - [16384, 128]
+      - [32768, 128]         # Moderater Kontext
+      - [65536, 128]         # Hoher Kontext
+      - ["MAX_CONTEXT", 128] # Absolutes Limit
+eval:
+  c: 8192   # Überschreibt die common-Sektion nur für Perplexity
+  b: 512    # Sicherer Batch-Wert für die Logit-Berechnung
+  ot: null  # Zerstört die Vererbung aus 'common', Flag wird weggelassen

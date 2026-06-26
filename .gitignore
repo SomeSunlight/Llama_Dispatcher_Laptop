@@ -1,0 +1,9 @@
+﻿# SQLite WAL-Dateien
+*.db-shm
+*.db-wal
+# OS
+.DS_Store
+Thumbs.db
+# IDEs
+.idea/
+.vscode/

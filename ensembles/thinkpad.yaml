@@ -1,0 +1,45 @@
+# start this ensemble with '$env:GGML_VK_VISIBLE_DEVICES="0"'
+# uv run src/dispatcher.py serve --ensemble thinkpad --instance Laptop
+# test: $env:GGML_VK_DISABLE_COOPMAT="1"
+# test: $env:GGML_VK_DISABLE_COOPMAT2="1"
+# $env:NODE_TLS_REJECT_UNAUTHORIZED="0"
+# taskkill /F /IM goosed.exe
+
+defaults:
+  engine: "vulkan"  # → instances/Laptop/engines/vulkan.yaml
+
+dispatcher:
+  port: 8001  # Dispatcher-Proxy-Port (Clients zeigen hierher)
+
+engine:
+  port: 8081  # llama.cpp-Server-Port (intern; Dispatcher leitet dorthin weiter)
+  host: "0.0.0.0"
+  models_max: 1
+
+models:
+  # ── Sparringpartner ─────────────────────────────────────────────────────────
+  # Echtes llama.cpp-Modell (belegt VRAM). Für Diskussionen, Analyse, Orchestrierung.
+  # Denkt aktiv nach bevor er antwortet (enable_thinking: true).
+  # Sampling-Defaults kommen aus defaults/gemma.yaml (temperature=1.0, top_p=0.95, ...).
+  - profile: "Thinkpad_vulkan_gemma_26B_A4B"
+    alias: "sparringpartner"
+    load-on-startup: true
+    chat_template_kwargs:
+      enable_thinking: true
+
+  # ── Agent ───────────────────────────────────────────────────────────────────
+  # Proxy-only: kein eigener VRAM-Eintrag. Leitet auf "sparringpartner" weiter.
+  # Für präzise Auftragsausführung: kein Denken, tiefe Temperatur, fokussiertes Sampling.
+  # Der Proxy übersetzt "model: agent" → "model: sparringpartner" und injiziert
+  # die untenstehenden Parameter in jeden Request – einheitlich für alle Clients.
+  - profile: "Thinkpad_vulkan_gemma_26B_A4B"
+    alias: "agent"
+    target: "sparringpartner"
+    chat_template_kwargs:
+      enable_thinking: false
+    sampling:
+      temperature: 0.3   # präzise, wenig Zufall
+      top_k: 20          # nur die 20 wahrscheinlichsten Token
+      top_p: 0.9
+      min_p: 0.1         # schneidet unwahrscheinliche Token hart ab
+      repeat_penalty: 1.1  # verhindert Wiederholungen bei langen Aufträgen

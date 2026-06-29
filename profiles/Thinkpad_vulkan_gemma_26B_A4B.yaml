@@ -1,20 +1,18 @@
 # start this profile with '$env:GGML_VK_VISIBLE_DEVICES="0"'
-name: "Thinkpad_vulkan_gemma_26B_A4B"
+name: "Best Workhorse"
 description: "QAT Komprimierung von Unsloth. Kaum Quantisierungsfehler. Ist aber eine 17 GB Datei. Damit reduzierter Kontext."
 
 # Für Beschreibung Parameter siehe hier: https://github.com/ggml-org/llama.cpp/blob/master/tools/cli/README.md
+
 defaults:
   model: "gemma"   # → defaults/models/gemma.yaml
-  engine: "vulkan"  # → instances/<name>/engines/vulkan.yaml
+  engine: "vulkan"  # → instances/Laptop/engines/vulkan.yaml
 
 common:
   m: "C:\\AI_Models\\LLM\\GGUF_Raw\\gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf" # Nur 14.2 GB bei fast keinen Quantisierungsfehlern!
 #  c: 32768 # possible, but brings memory consumption of laptop strongly down
   c: 16384
   threads: 1
-  # Die Speicherarchitektur MUSS global gelten. Mit q4 ist ein grösserer Kontext möglich
-#  cache-type-k: "q4_0"
-#  cache-type-v: "q4_0"
   cache-type-k: "q4_0"
   cache-type-v: "q4_0"
 

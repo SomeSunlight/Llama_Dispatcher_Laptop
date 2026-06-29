@@ -1,0 +1,4 @@
+# engines/sycl.yaml
+# Maschinenspezifisch – passe bin_dir nach jedem llama.cpp-Update an.
+# Zum Konzept siehe defaults/engine-templates/README.md
+bin_dir: "c:\llama.cpp\server\server_07_SYCL"

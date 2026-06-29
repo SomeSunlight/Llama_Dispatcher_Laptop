@@ -20,7 +20,7 @@ models:
   # ── Sparringpartner ─────────────────────────────────────────────────────────
   # Echtes llama.cpp-Modell (belegt VRAM). Für Diskussionen, Analyse, Orchestrierung.
   # Denkt aktiv nach bevor er antwortet (enable_thinking: true).
-  # Sampling-Defaults kommen aus defaults/gemma.yaml (temperature=1.0, top_p=0.95, ...).
+  # Sampling-Defaults kommen aus dem nachfolgenden Profil selbst
   - profile: "Thinkpad_vulkan_gemma_26B_A4B"
     alias: "sparringpartner"
     load-on-startup: true

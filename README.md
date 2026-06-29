@@ -1,52 +1,51 @@
 # Llama_Dispatcher – Instance: Laptop
 
-Dieses private Repository enthält die maschinenspezifische Konfiguration der Instanz **Laptop**
-für den [Llama_Dispatcher](https://github.com/SomeSunlight/Llama_Dispatcher).
+This private repository contains the machine-specific configuration of the **Laptop** instance
+for [Llama_Dispatcher](https://github.com/SomeSunlight/Llama_Dispatcher).
 
-## Inhalt
+## Content
 
-| Verzeichnis / Datei | Beschreibung |
+| Directory / File | Description |
 |---|---|
-| `instance.yaml` | Machine-GUID und Nickname dieser Instanz |
-| `profiles/` | YAML-Profile (llama.cpp-Startparameter) für diese Maschine |
-| `ensembles/` | YAML-Ensembles (Zusammenstellungen mehrerer Profile) |
-| `engines/` | Engine-Konfiguration (Vulkan / SYCL / CUDA) |
-| `data/metrics.db` | SQLite-Datenbank mit Benchmark- und Laufzeit-Metriken |
-| `data/thinkpad_models.ini` | Modell-Preset-Datei für llama-server (Multi-Model-Router) |
+| `instance.yaml` | Machine-GUID and nickname of this instance |
+| `profiles/` | YAML profiles (llama.cpp startup parameters) for this machine |
+| `ensembles/` | YAML ensembles (combinations of multiple profiles) |
+| `engines/` | Engine configuration (Vulkan / SYCL / CUDA) |
+| `data/metrics.db` | SQLite database with benchmark and runtime metrics |
+| `data/thinkpad_models.ini` | Model preset file for llama-server (Multi-Model-Router) |
 
-## Zugehöriger Dispatcher
+## Associated Dispatcher
 
-Der Dispatcher selbst (Code, Defaults, Dokumentation) liegt im öffentlichen Repo:
+The Dispatcher itself (code, defaults, documentation) is located in the public repo:
 → https://github.com/SomeSunlight/Llama_Dispatcher
 
-## Setup auf neuem Rechner
+## Setup on a New Machine
 
-Das Hauptrepo und die Instanz-Repos müssen in die **exakt richtigen Verzeichnisse** geklont werden.
-Der Trick: `git clone <url> <zielverzeichnis>` akzeptiert einen eigenen Ordnernamen.
+The main repo and the instance repos must be cloned into the **exact correct directories**.
+The trick: `git clone <url> <target_directory>` allows a custom folder name.
 
 ```powershell
-# 1. Hauptrepo klonen
+# 1. Clone main repo
 git clone https://github.com/SomeSunlight/Llama_Dispatcher.git
 cd Llama_Dispatcher
 
-# 2. Diese Instanz in das korrekte Unterverzeichnis klonen
-#    (GitHub würde sonst "Llama_Dispatcher_Laptop" als Ordner anlegen – falsch!)
+# 2. Clone this instance into the correct subdirectory
+#    (Otherwise GitHub would create "Llama_Dispatcher_Laptop" as a folder – wrong!)
 git clone https://github.com/SomeSunlight/Llama_Dispatcher_Laptop.git instances/Laptop
 
-# 3. Python-Umgebung einrichten
+# 3. Set up Python environment
 uv sync
 ```
 
-Danach muss `instance.yaml` auf die neue `machine_guid` dieser Maschine aktualisiert werden
-(oder eine neue Instanz unter anderem Namen angelegt werden).
+Afterward, `instance.yaml` must be updated with the new `machine_guid` of this machine
+(or a new instance can be created under a different name).
 
-## Nutzung
+## Usage
 
 ```bash
 uv run src/dispatcher.py serve --ensemble <name> --instance Laptop
 ```
 
-## Lizenz
+## License
 
-MIT – nur relevant falls dieses Repo jemals veröffentlicht wird.
-
+MIT – only relevant if this repo is ever published.

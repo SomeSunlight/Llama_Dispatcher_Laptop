@@ -1,29 +1,29 @@
 # start this profile with '$env:GGML_VK_VISIBLE_DEVICES="0"'
 name: "Test"
-description: "QAT Komprimierung von Unsloth. Kaum Quantisierungsfehler. Ist aber eine 17 GB Datei. Damit reduzierter Kontext."
+description: "Unsloth QAT compression. Almost no quantization errors. However, it is a 17 GB file. Hence, reduced context."
 
-# Für Beschreibung Parameter siehe hier: https://github.com/ggml-org/llama.cpp/blob/master/tools/cli/README.md
+# For parameter descriptions, see here: https://github.com/ggml-org/llama.cpp/blob/master/tools/cli/README.md
 defaults:
   model: "gemma"   # → defaults/models/gemma.yaml
   engine: "vulkan"  # → instances/<name>/engines/vulkan.yaml
 
 common:
-  m: "C:\\AI_Models\\LLM\\GGUF_Raw\\gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf" # Nur 14.2 GB bei fast keinen Quantisierungsfehlern!
+  m: "C:\\AI_Models\\LLM\\GGUF_Raw\\gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf" # Only 14.2 GB with almost no quantization errors!
   # c: 262000
   c: 65536
   # ngl: 99
   threads: 16
-  # Die Speicherarchitektur MUSS global gelten. Mit q4 ist ein grösserer Kontext möglich
-  cache-type-k: "q8_0" # leider nicht q8, da grosses Modell
-  cache-type-v: "q8_0" # leider nicht q8, da grosses Modell
-  # Flash Attention MUSS global sein, wenn der Cache quantisiert wird
+  # The memory architecture MUST be global. With q4, a larger context is possible
+  cache-type-k: "q8_0" # unfortunately not q8, due to large model
+  cache-type-v: "q8_0" # unfortunately not q8, due to large model
+  # Flash Attention MUST be global if the cache is quantized
   flash-attn: true
-  # Vulkan spezifisch:
+  # Vulkan specific:
   split-mode: none
   main-gpu: 0
   n-gpu-layers: 99
 
-# Diese Parameter werden NUR im 'serve' Modus angehängt
+# These parameters are ONLY appended in 'serve' mode
 serve:
   # mmproj: "C:\\AI_Models\\LLM\\GGUF_Raw\\mmproj-F16-qat.gguf"
   image-min-tokens: 300
@@ -32,30 +32,30 @@ serve:
   batch-size: 2048
   parallel: 1
   cont-batching: true
-  jinja: true # wird zwingend für Gemma 4 benötigt
-  # falls nicht im ensemble definiert:
+  jinja: true # required for Gemma 4
+  # if not defined in ensemble:
   port: 8081
   host: "0.0.0.0"
 
-  # MTP support. Wird von llama bench nicht unterstützt. Siehe chat mit gemini 3.1 pro am 10.6.2026
+  # MTP support. Not supported by llama bench. See discussion with Gemini 3.1 pro on 10.06.2026
   spec-type: "draft-mtp"
   spec-draft-n-max: 1
   model-draft: "C:\\AI_Models\\LLM\\GGUF_Raw\\mtp-gemma-4-26B-A4B-it.gguf"
 
-# Diese Parameter werden NUR im 'bench' Modus angehängt
+# These parameters are ONLY appended in 'bench' mode
 bench:
   r: 1
   pg:
-      - [512, 128]           # Referenz: Fast leerer Cache
+      - [512, 128]           # Reference: Almost empty cache
       - [1024, 128]
       - [2048, 128]
       - [4096, 128]
       - [8192, 128]
       - [16384, 128]
-      - [32768, 128]         # Moderater Kontext
-      - [65536, 128]         # Hoher Kontext
-      - ["MAX_CONTEXT", 128] # Absolutes Limit
+      - [32768, 128]         # Moderate context
+      - [65536, 128]         # High context
+      - ["MAX_CONTEXT", 128] # Absolute limit
 eval:
-  c: 8192   # Überschreibt die common-Sektion nur für Perplexity
-  b: 512    # Sicherer Batch-Wert für die Logit-Berechnung
-  ot: null  # Zerstört die Vererbung aus 'common', Flag wird weggelassen
+  c: 8192   # Overwrites the common section only for Perplexity
+  b: 512    # Safe batch value for logit calculation
+  ot: null  # Removes inheritance from 'common', flag is omitted

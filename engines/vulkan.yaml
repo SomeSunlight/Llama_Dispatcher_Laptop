@@ -1,6 +1,6 @@
 # instances/Laptop/engines/vulkan.yaml
 # Vulkan – llama.cpp Vulkan-Build für Laptop (Thinkpad RTX 500 / iGPU)
-bin_dir: "c:\\llama.cpp\\server\\server_06_vulcan"
+bin_dir: 'c:\llama.cpp\server\server_06_vulcan'
 
 # Engine-spezifische Laufzeit-Parameter (werden per deep-merge in Profil-common:+serve: eingebettet).
 # Profil-Werte überschreiben diese Defaults.

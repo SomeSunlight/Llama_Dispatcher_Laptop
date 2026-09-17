@@ -1,12 +1,8 @@
-# start this ensemble with '$env:GGML_VK_VISIBLE_DEVICES="0"'
-# uv run src/dispatcher.py serve --ensemble thinkpad --instance Laptop
-# test: $env:GGML_VK_DISABLE_COOPMAT="1"
-# test: $env:GGML_VK_DISABLE_COOPMAT2="1"
-# $env:NODE_TLS_REJECT_UNAUTHORIZED="0"
-# taskkill /F /IM goosed.exe
+# Vulkan/Intel ensemble for the Laptop instance.
+# GPU selection comes from engines/vulkan-intel.yaml; no caller environment setup is required.
 
 defaults:
-  engine: "vulkan"  # → instances/Laptop/engines/vulkan.yaml
+  engine: "vulkan-intel"  # → instances/Laptop/engines/vulkan-intel.yaml
 
 dispatcher:
   port: 8001  # Dispatcher-Proxy port (clients point here)

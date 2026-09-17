@@ -1,4 +1,3 @@
-# start this profile with '$env:GGML_VK_VISIBLE_DEVICES="0"'
 name: "Best Workhorse"
 description: "Unsloth QAT compression. Almost no quantization errors. However, it is a 17 GB file. Hence, reduced context."
 
@@ -6,10 +5,10 @@ description: "Unsloth QAT compression. Almost no quantization errors. However, i
 
 defaults:
   model: "gemma"   # → defaults/models/gemma.yaml
-  engine: "vulkan"  # → instances/Laptop/engines/vulkan.yaml
+  engine: "vulkan-intel"  # → instances/Laptop/engines/vulkan-intel.yaml
 
 common:
-  m: "C:\\AI_Models\\LLM\\GGUF_Raw\\gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf" # Only 14.2 GB with almost no quantization errors!
+  m: "${LLAMA_MODEL_ROOT}/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf" # Only 14.2 GB with almost no quantization errors!
 #  c: 32768 # possible, but brings memory consumption of laptop strongly down
   c: 16384
   threads: 1
@@ -18,7 +17,7 @@ common:
 
 # These parameters are ONLY appended in 'serve' mode
 serve:
-  # mmproj: "C:\\AI_Models\\LLM\\GGUF_Raw\\mmproj-F16-qat.gguf"
+  # mmproj: "${LLAMA_MODEL_ROOT}/mmproj-F16-qat.gguf"
   # image-min-tokens: 300
   # image-max-tokens: 512
   ubatch-size: 2048
@@ -31,7 +30,7 @@ serve:
   host: "0.0.0.0"
 
   ctx-checkpoints: 0
-  # no-kv-offload and cache-ram come from instances/Laptop/engines/vulkan.yaml
+  # no-kv-offload and cache-ram come from instances/Laptop/engines/vulkan-intel.yaml
 
 # These parameters are ONLY appended in 'bench' mode
 bench:

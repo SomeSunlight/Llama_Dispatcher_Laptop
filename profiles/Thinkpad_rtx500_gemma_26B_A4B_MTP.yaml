@@ -1,14 +1,13 @@
-# start this profile with "$env:GGML_VK_VISIBLE_DEVICES="1"
 name: "Test"
 description: "Unsloth QAT compression. Almost no quantization errors. However, it is a 17 GB file. Hence, reduced context."
 
 # For parameter descriptions, see here: https://github.com/ggml-org/llama.cpp/blob/master/tools/cli/README.md
 defaults:
   model: "gemma"   # → defaults/models/gemma.yaml
-  engine: "vulkan"  # → instances/<name>/engines/vulkan.yaml
+  engine: "vulkan-rtx500"  # → instances/<name>/engines/vulkan-rtx500.yaml
 
 common:
-  m: "C:\\AI_Models\\LLM\\GGUF_Raw\\gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf" # Only 14.2 GB with almost no quantization errors!
+  m: "${LLAMA_MODEL_ROOT}/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf" # Only 14.2 GB with almost no quantization errors!
   # c: 262000
   c: 2048
   threads: 16
@@ -27,7 +26,7 @@ common:
 
 # These parameters are ONLY appended in 'serve' mode
 serve:
-  # mmproj: "C:\\AI_Models\\LLM\\GGUF_Raw\\mmproj-F16-qat.gguf"
+  # mmproj: "${LLAMA_MODEL_ROOT}/mmproj-F16-qat.gguf"
   image-min-tokens: 300
   image-max-tokens: 512
   ubatch-size: 2048
@@ -42,7 +41,7 @@ serve:
   # MTP support. Not supported by llama bench. See discussion with Gemini 3.1 pro on 10.06.2026
   spec-type: "draft-mtp"
   spec-draft-n-max: 1
-  model-draft: "C:\\AI_Models\\LLM\\GGUF_Raw\\mtp-gemma-4-26B-A4B-it.gguf"
+  model-draft: "${LLAMA_MODEL_ROOT}/mtp-gemma-4-26B-A4B-it.gguf"
 
 # These parameters are ONLY appended in 'bench' mode
 bench:

@@ -1,5 +1,4 @@
-# start this profile with '$env:GGML_VK_VISIBLE_DEVICES="0"'
-name: "Thinkpad_vulkan_gemma_26B_A4B"
+name: "Thinkpad_SYCL_gemma_26B_A4B"
 description: "Unsloth QAT compression. Almost no quantization errors. However, it is a 17 GB file. Hence, reduced context."
 
 # For parameter descriptions, see here: https://github.com/ggml-org/llama.cpp/blob/master/tools/cli/README.md
@@ -8,7 +7,7 @@ defaults:
   engine: "sycl"  # → instances/<name>/engines/sycl.yaml
 
 common:
-  m: "C:\\AI_Models\\LLM\\GGUF_Raw\\gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf" # Only 14.2 GB with almost no quantization errors!
+  m: "${LLAMA_MODEL_ROOT}/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf" # Only 14.2 GB with almost no quantization errors!
 #  c: 32768 # possible, but brings memory consumtion of laptop strongly down
   c: 16384
   threads: 1
@@ -19,14 +18,14 @@ common:
   cache-type-v: "q8_0"
   # Flash Attention MUST be global if the cache is quantized
   flash-attn: true
-  # Vulkan specific:
+  # Backend-specific:
   split-mode: none
   main-gpu: 0
   n-gpu-layers: 99 #ngl
 
 # These parameters are ONLY appended in 'serve' mode
 serve:
-  # mmproj: "C:\\AI_Models\\LLM\\GGUF_Raw\\mmproj-F16-qat.gguf"
+  # mmproj: "${LLAMA_MODEL_ROOT}/mmproj-F16-qat.gguf"
   # image-min-tokens: 300
   # image-max-tokens: 512
   ubatch-size: 2048

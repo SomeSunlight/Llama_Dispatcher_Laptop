@@ -1,6 +1,6 @@
 # Llama_Dispatcher – Instance: Laptop
 
-This private repository contains the machine-specific configuration of the **Laptop** instance
+This repository contains the machine-specific configuration of the **Laptop** instance
 for [Llama_Dispatcher](https://github.com/SomeSunlight/Llama_Dispatcher).
 
 ## Content
